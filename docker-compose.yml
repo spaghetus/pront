@@ -1,0 +1,8 @@
+version: "3.7"
+
+services:
+  ttyd:
+    build: ./ttyd
+    image: prontd-ttyd
+    ports:
+      - "2300:23/tcp"

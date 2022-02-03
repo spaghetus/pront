@@ -65,7 +65,7 @@ impl OutlineBuilder for TextOutlineBuilder {
 		}));
 	}
 
-	fn quad_to(&mut self, x1: f32, y1: f32, x: f32, y: f32) {
+	fn quad_to(&mut self, _x1: f32, _y1: f32, x: f32, y: f32) {
 		self.commands.push(TextCommand::Line(Vec2 {
 			x: x as F + self.offset_x as F,
 			y: self.offset_y as F - y as F,
@@ -133,7 +133,7 @@ mod tests {
 	}
 }
 
-const PT_TO_MM: F = 0.35277777777777777777777777777778;
+const PT_TO_MM: F = 0.352_777_777_777_777_8;
 
 #[non_exhaustive]
 #[derive(Debug)]
@@ -163,7 +163,11 @@ impl From<TextOutlineBuilder> for Vec<PenCommand> {
 					}
 					commands.push(PenCommand::Move(p * PT_TO_MM));
 				}
-				TextCommand::Arc { from, to, center } => {
+				TextCommand::Arc {
+					from: _,
+					to,
+					center: _,
+				} => {
 					// I need to figure out how to actually compute this.
 					// Currently it's just a straight line.
 					if !pen_down {

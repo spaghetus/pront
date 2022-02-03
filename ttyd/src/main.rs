@@ -3,12 +3,14 @@ use tokio::net::TcpListener;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
 	eprintln!("Begin");
-	let width: usize = std::env::var("WIDTH").unwrap_or("80".to_string()).parse()?;
-	let tab_width: usize = std::env::var("TAB_WIDTH")
-		.unwrap_or("4".to_string())
+	let width: usize = std::env::var("WIDTH")
+		.unwrap_or_else(|_| "80".to_string())
 		.parse()?;
-	let listen_addr = std::env::var("LISTEN").unwrap_or("0.0.0.0:23".to_string());
-	let post_url = std::env::var("POST_URL").unwrap_or("http://pland/txt".to_string());
+	let tab_width: usize = std::env::var("TAB_WIDTH")
+		.unwrap_or_else(|_| "4".to_string())
+		.parse()?;
+	let listen_addr = std::env::var("LISTEN").unwrap_or_else(|_| "0.0.0.0:23".to_string());
+	let post_url = std::env::var("POST_URL").unwrap_or_else(|_| "http://pland/txt".to_string());
 	let listener = TcpListener::bind(listen_addr).await?;
 	let mut x = 0;
 	let client = reqwest::Client::new();

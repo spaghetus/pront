@@ -9,12 +9,12 @@ use tokio::sync::Mutex;
 #[tokio::main]
 async fn main() {
 	// Read config from env
-	let default_margins: usize = std::env::var("MARGINS")
-		.unwrap_or("40".to_string())
+	let _default_margins: usize = std::env::var("MARGINS")
+		.unwrap_or_else(|_| "40".to_string())
 		.parse()
 		.unwrap();
-	let pend_address = std::env::var("PEND_ADDRESS").unwrap_or("pend:23".to_string());
-	let listen_address = std::env::var("LISTEN").unwrap_or("0.0.0.0:80".to_string());
+	let pend_address = std::env::var("PEND_ADDRESS").unwrap_or_else(|_| "pend:23".to_string());
+	let listen_address = std::env::var("LISTEN").unwrap_or_else(|_| "0.0.0.0:80".to_string());
 	// Ensure font cache exists
 	assert!(std::fs::read_dir("/fonts").is_ok());
 	// Open TCP socket to pend
@@ -23,7 +23,7 @@ async fn main() {
 	));
 	// Setup HTTP server
 	let make_service = make_service_fn(move |_| {
-		let pend = pend.clone();
+		let _pend = pend.clone();
 		async move {
 			Ok::<_, hyper::Error>(service_fn(move |req| {
 				let path = req.uri().path().to_string();

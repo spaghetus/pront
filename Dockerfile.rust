@@ -5,8 +5,10 @@ RUN mkdir src && echo "fn main(){}" > src/main.rs
 RUN cargo build --release
 COPY . .
 COPY src/main.rs src/main.rs
+RUN touch src/main.rs
 RUN cargo build --release
+RUN mv $(find target/release/ -maxdepth 1 -type f -executable) /app/bin
 
 FROM debian
-COPY --from=builder /app/target/release/ttyd /usr/bin/ttyd
-CMD ttyd
+COPY --from=builder /app/bin /usr/bin/app
+CMD app

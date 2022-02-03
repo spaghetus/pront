@@ -2,7 +2,27 @@ version: "3.7"
 
 services:
   ttyd:
-    build: ./ttyd
-    image: prontd-ttyd
+    init: true
+    build:
+      context: ./ttyd
+      dockerfile: ../Dockerfile.rust
     ports:
       - "2300:23/tcp"
+  pland:
+    init: true
+    build:
+      context: ./pland
+      dockerfile: ../Dockerfile.rust
+    depends_on:
+      - pend
+    volumes:
+      - fonts:/fonts
+  pend:
+    init: true
+    build:
+      context: ./pend
+      dockerfile: ../Dockerfile.rust
+    ports:
+      - 2301:23/tcp
+volumes:
+  fonts:
